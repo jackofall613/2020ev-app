@@ -12,13 +12,17 @@ Private mobile app for condo residents sharing a Level 2 ChargePoint (CPF50) cha
 
 ## How Codex and GPT-5.6 were used
 
-**Codex** was the pitch partner that got this project approved in the first place.
-The original condo board had five members with five different vocabularies, and a
-deck that spoke only one of them was going to lose. Codex helped build the board
-pitch deck and do the homework behind it — what each board member did, what they
+**Codex** was there before the first commit — it was the pitch partner that got
+this project approved in the first place. There was no charger in the building:
+the founder bought the hardware and had to win a condo-board vote to install it.
+The board had five members with five different vocabularies, and a deck that
+spoke only one of them was going to lose. Codex helped build the board pitch
+deck and do the homework behind it — what each board member did, what they
 cared about — then rebuild one pitch into five dialects (the treasurer got pure
 ledger math; the golf lover was told the queue "gives everyone a tee time" and
-that camping on the plug is slow play). The vote wasn't close.
+that camping on the plug is slow play). The vote wasn't close. Codex then stayed
+on as a pair-programmer during the build of the stack itself (React Native app,
+Node/TypeScript API, Next.js admin portal).
 
 **GPT-5.6** (`gpt-5.6-terra`) powers the product's AI layer in production:
 
