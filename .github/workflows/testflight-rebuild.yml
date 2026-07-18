@@ -1,0 +1,32 @@
+name: TestFlight Auto-Rebuild
+
+on:
+  schedule:
+    # Runs every 89 days: Jan 1, Apr 1, Jul 1, Oct 1 at 9am ET
+    - cron: '0 13 1 1,4,7,10 *'
+  workflow_dispatch: # allows manual trigger from GitHub
+
+jobs:
+  build-and-submit:
+    name: Build & Submit to TestFlight
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: apps/mobile
+
+      - name: Build & submit to TestFlight
+        working-directory: apps/mobile
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+        run: |
+          npx eas-cli build --platform ios --profile preview --non-interactive --no-wait
+          echo "Build submitted to EAS. It will be automatically submitted to TestFlight when complete."

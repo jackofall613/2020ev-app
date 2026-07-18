@@ -1,0 +1,75 @@
+name: Postgres Backup
+
+# Off-site logical backup of the production database — currently the PRIMARY
+# backup, since Railway's native volume backups + PITR require the Pro plan
+# (not enabled). A portable pg_dump (custom format) stored as a GitHub artifact,
+# recoverable even if the Railway account is unavailable, and verified restorable
+# each run (see the "Verify the dump restores" step). If you later upgrade to Pro,
+# enable native backups too (Postgres service -> Backups) for belt-and-braces.
+on:
+  schedule:
+    - cron: '0 8 * * *'   # daily at 08:00 UTC (~3–4am ET)
+  workflow_dispatch: {}    # manual trigger from the Actions tab
+
+jobs:
+  dump:
+    name: pg_dump → artifact
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PostgreSQL 18 client
+        run: |
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/pgdg.gpg
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-18
+
+      - name: Dump database (custom format, compressed)
+        env:
+          DATABASE_URL: ${{ secrets.BACKUP_DATABASE_URL }}
+          PGSSLMODE: require
+          PGCONNECT_TIMEOUT: '30'
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "::error::BACKUP_DATABASE_URL secret is not set"; exit 1
+          fi
+          STAMP=$(date -u +%Y-%m-%d)
+          /usr/lib/postgresql/18/bin/pg_dump "$DATABASE_URL" \
+            --no-owner --no-privileges -Fc -f "2020ev-$STAMP.dump"
+          ls -lh "2020ev-$STAMP.dump"
+          echo "STAMP=$STAMP" >> "$GITHUB_ENV"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ env.STAMP }}
+          path: 2020ev-*.dump
+          retention-days: 90
+          if-no-files-found: error
+
+      # Prove the dump is actually restorable — an untested backup is a hope, not a
+      # backup. Runs AFTER upload so the artifact is safe even if this step is flaky;
+      # a failed restore/sanity-check turns the run red and notifies.
+      - name: Verify the dump restores
+        run: |
+          docker run -d --name verifypg \
+            -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=verify \
+            -p 5432:5432 postgres:18
+          echo "waiting for the throwaway postgres..."
+          for i in $(seq 1 45); do
+            if docker exec verifypg pg_isready -U postgres -d verify >/dev/null 2>&1; then echo "ready"; break; fi
+            sleep 2
+          done
+          export PGPASSWORD=postgres
+          PSQL="/usr/lib/postgresql/18/bin/psql -h localhost -U postgres -d verify -tAc"
+          # Restore into the fresh DB (schema is self-contained; --no-owner/-privileges).
+          /usr/lib/postgresql/18/bin/pg_restore --no-owner --no-privileges \
+            -h localhost -U postgres -d verify "2020ev-$STAMP.dump"
+          # Sanity: core tables must restore with plausible data.
+          buildings=$($PSQL "SELECT count(*) FROM buildings")
+          users=$($PSQL "SELECT count(*) FROM users")
+          txns=$($PSQL "SELECT count(*) FROM wallet_transactions")
+          echo "restored counts — buildings=$buildings users=$users wallet_transactions=$txns"
+          if [ "$buildings" -lt 1 ] || [ "$users" -lt 1 ]; then
+            echo "::error::Restore verification failed — core tables are empty (buildings=$buildings, users=$users)"; exit 1
+          fi
+          echo "✅ backup verified restorable"

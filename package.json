@@ -1,0 +1,18 @@
+{
+  "name": "2020ev",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "postinstall": "node -e \"const fs=require('fs'),p='/Users/jordanneustadter/2020ev/node_modules/expo-modules-core/package.json';try{const d=JSON.parse(fs.readFileSync(p,'utf8'));d.main='index.js';d.exports={'types':'./build/index.d.ts','default':'./index.js'};fs.writeFileSync(p,JSON.stringify(d,null,2));console.log('expo-modules-core patched');}catch(e){}\"",
+    "dev:api": "npm run dev --workspace=apps/api",
+    "dev:web": "npm run dev --workspace=apps/web",
+    "dev:mobile": "npm run start --workspace=apps/mobile",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "PP8G4AYQ66.com.2020ev.app",
+        "paths": ["/invite", "/invite/*"]
+      }
+    ]
+  }
+}

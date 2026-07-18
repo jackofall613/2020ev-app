@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* ── Theme system ─────────────────────────────────────────────────────────────
+   The portal was originally authored dark-only: components use text-white/*,
+   bg-white/*, border-white/* utilities throughout. Rather than rewrite every
+   class, the LIGHT theme (now the default) remaps those utilities under
+   html:not(.dark), and `html.dark` restores the original look. A pre-paint
+   script in layout.tsx applies .dark from localStorage('theme'); default is
+   light. Page chrome (backgrounds, modals) reads the CSS variables below. */
+
+:root {
+  --page-bg: #f4f6fb;
+  --page-fg: #0f172a;
+  --header-bg: rgba(244, 246, 251, 0.85);
+  --modal-bg: #ffffff;
+  --overlay: rgba(15, 23, 42, 0.45);
+  color-scheme: light;
+}
+
+html.dark {
+  --page-bg: #0A0F1E;
+  --page-fg: #f1f5f9;
+  --header-bg: rgba(10, 15, 30, 0.85);
+  --modal-bg: #0F1524;
+  --overlay: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+html { background-color: var(--page-bg); }
+
+body {
+  background-color: var(--page-bg);
+  color: var(--page-fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+/* Clean scrollbar */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.15); border-radius: 4px; }
+html.dark ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+
+/* Select dropdowns follow the theme */
+select option { background: #ffffff; color: #0f172a; }
+html.dark select option { background: #1e293b; color: #f1f5f9; }
+
+/* ── Light-theme remap of dark-authored utilities ────────────────────────────
+   Ink is slate-900 (15,23,42). Low alphas are boosted slightly for legibility
+   on white. Scoped to html:not(.dark) so the dark theme keeps the originals. */
+
+/* Text */
+html:not(.dark) .text-white { color: #0f172a; }
+html:not(.dark) .text-white\/80 { color: rgba(15,23,42,.82); }
+html:not(.dark) .text-white\/70 { color: rgba(15,23,42,.72); }
+html:not(.dark) .text-white\/60 { color: rgba(15,23,42,.65); }
+html:not(.dark) .text-white\/55 { color: rgba(15,23,42,.58); }
+html:not(.dark) .text-white\/50 { color: rgba(15,23,42,.52); }
+html:not(.dark) .text-white\/40 { color: rgba(15,23,42,.45); }
+html:not(.dark) .text-white\/35 { color: rgba(15,23,42,.40); }
+html:not(.dark) .text-white\/30 { color: rgba(15,23,42,.35); }
+html:not(.dark) .text-white\/25 { color: rgba(15,23,42,.30); }
+html:not(.dark) .text-white\/20 { color: rgba(15,23,42,.25); }
+html:not(.dark) .hover\:text-white\/50:hover { color: rgba(15,23,42,.52); }
+html:not(.dark) .hover\:text-white\/60:hover { color: rgba(15,23,42,.65); }
+html:not(.dark) .hover\:text-white\/70:hover { color: rgba(15,23,42,.72); }
+html:not(.dark) .hover\:text-white\/80:hover { color: rgba(15,23,42,.82); }
+html:not(.dark) .hover\:text-white:hover { color: #0f172a; }
+html:not(.dark) .group:hover .group-hover\:text-white\/70 { color: rgba(15,23,42,.72); }
+html:not(.dark) .placeholder-white\/25::placeholder { color: rgba(15,23,42,.35); }
+
+/* Surfaces (cards/inputs were white-alpha on dark → ink-alpha on light) */
+html:not(.dark) .bg-white\/2 { background-color: rgba(15,23,42,.025); }
+html:not(.dark) .bg-white\/3 { background-color: rgba(15,23,42,.035); }
+html:not(.dark) .bg-white\/4 { background-color: rgba(15,23,42,.045); }
+html:not(.dark) .bg-white\/6 { background-color: rgba(15,23,42,.06); }
+html:not(.dark) .bg-white\/8 { background-color: rgba(15,23,42,.075); }
+html:not(.dark) .bg-white\/15 { background-color: rgba(15,23,42,.12); }
+html:not(.dark) .bg-white\/20 { background-color: rgba(15,23,42,.15); }
+html:not(.dark) .hover\:bg-white\/3:hover { background-color: rgba(15,23,42,.035); }
+html:not(.dark) .hover\:bg-white\/4:hover { background-color: rgba(15,23,42,.045); }
+html:not(.dark) .hover\:bg-white\/5:hover { background-color: rgba(15,23,42,.055); }
+html:not(.dark) .hover\:bg-white\/10:hover { background-color: rgba(15,23,42,.09); }
+html:not(.dark) .hover\:bg-white\/12:hover { background-color: rgba(15,23,42,.10); }
+html:not(.dark) .hover\:bg-white\/14:hover { background-color: rgba(15,23,42,.12); }
+html:not(.dark) .hover\:bg-white\/30:hover { background-color: rgba(15,23,42,.20); }
+html:not(.dark) .focus\:bg-white\/8:focus { background-color: rgba(15,23,42,.075); }
+html:not(.dark) .bg-black\/20 { background-color: rgba(15,23,42,.05); }
+html:not(.dark) .bg-black\/30 { background-color: rgba(15,23,42,.08); }
+
+/* Borders / dividers */
+html:not(.dark) .border-white\/5 { border-color: rgba(15,23,42,.08); }
+html:not(.dark) .border-white\/8 { border-color: rgba(15,23,42,.10); }
+html:not(.dark) .border-white\/10 { border-color: rgba(15,23,42,.12); }
+html:not(.dark) .border-white\/12 { border-color: rgba(15,23,42,.14); }
+html:not(.dark) .border-white\/15 { border-color: rgba(15,23,42,.16); }
+html:not(.dark) .border-white\/30 { border-color: rgba(15,23,42,.28); }
+html:not(.dark) .border-white\/40 { border-color: rgba(15,23,42,.35); }
+html:not(.dark) .divide-white\/5 > :not([hidden]) ~ :not([hidden]) { border-color: rgba(15,23,42,.07); }
+
+/* Buttons on colored backgrounds (blue/emerald/violet): always white text in
+   BOTH themes — deliberately not remapped above. */
+.text-on-accent { color: #ffffff; }
+
+/* Accent text — the -300/-400 shades are tuned for dark; darken on light */
+html:not(.dark) .text-blue-400 { color: #2563eb; }
+html:not(.dark) .text-blue-300 { color: #3b82f6; }
+html:not(.dark) .hover\:text-blue-300:hover { color: #1d4ed8; }
+html:not(.dark) .text-red-400 { color: #dc2626; }
+html:not(.dark) .text-emerald-400 { color: #059669; }
+html:not(.dark) .text-emerald-300 { color: #10b981; }
+html:not(.dark) .text-amber-400 { color: #b45309; }
+html:not(.dark) .text-amber-300 { color: #d97706; }
+html:not(.dark) .text-amber-400\/80 { color: rgba(180,83,9,.85); }
+html:not(.dark) .text-amber-400\/70 { color: rgba(180,83,9,.75); }
+html:not(.dark) .text-amber-400\/60 { color: rgba(180,83,9,.65); }
+html:not(.dark) .text-yellow-400 { color: #a16207; }
+html:not(.dark) .text-green-400 { color: #15803d; }
+html:not(.dark) .text-violet-300 { color: #7c3aed; }
+html:not(.dark) .text-purple-300 { color: #9333ea; }

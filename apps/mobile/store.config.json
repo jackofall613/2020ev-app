@@ -1,0 +1,31 @@
+{
+  "configVersion": 0,
+  "apple": {
+    "info": {
+      "en-US": {
+        "title": "2020EV",
+        "subtitle": "Shared EV charging for condos",
+        "description": "2020EV helps residents of participating buildings share a single EV charger without the group-chat chaos.\n\nSee the charger's live status, know who's plugged in, and claim your priority day. Every charging session is tracked automatically — energy used, duration, and your share of the electricity cost — and billed to your in-app wallet, which your building's administrator manages. A community feed keeps neighbors coordinated, and push notifications tell you when the charger frees up or a session is billed.\n\n2020EV is invite-only: you'll need an invitation from your building's administrator to sign in. Each building's data is private to that building — residents only ever see their own community.\n\nFeatures:\n• Live charger status and current session\n• Weekday priority scheduling\n• Automatic session tracking and cost splitting\n• Wallet balance and full charging history\n• Community feed for your building\n• Push notifications\n\nIs your building sharing one charger over a group chat and a spreadsheet? Get in touch — 2020EV can run your charger too.",
+        "keywords": [
+          "ev",
+          "charger",
+          "charging",
+          "condo",
+          "apartment",
+          "building",
+          "shared",
+          "schedule",
+          "electric vehicle",
+          "hoa"
+        ],
+        "marketingUrl": "https://2020ev-admin.vercel.app",
+        "supportUrl": "https://2020ev-admin.vercel.app/support",
+        "privacyPolicyUrl": "https://2020ev-admin.vercel.app/privacy"
+      }
+    },
+    "categories": ["UTILITIES", "LIFESTYLE"],
+    "release": {
+      "automaticRelease": false
+    }
+  }
+}

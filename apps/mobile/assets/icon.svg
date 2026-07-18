@@ -1,0 +1,383 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024" shape-rendering="geometricPrecision">
+  <defs>
+
+    <!-- Background radial glow -->
+    <radialGradient id="bgGrad" cx="50%" cy="48%" r="55%">
+      <stop offset="0%" stop-color="#0D1A32"/>
+      <stop offset="100%" stop-color="#0A0F1E"/>
+    </radialGradient>
+
+    <!-- Building wall gradient (slight warm-to-cool) -->
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#E8EEF8"/>
+      <stop offset="100%" stop-color="#F0F4FF"/>
+    </linearGradient>
+
+    <!-- Teal glass gradient -->
+    <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5CC"/>
+      <stop offset="50%" stop-color="#00C9B1"/>
+      <stop offset="100%" stop-color="#009E8C"/>
+    </linearGradient>
+
+    <!-- Glass panel reflection -->
+    <linearGradient id="glassSheen" x1="0%" y1="0%" x2="40%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="40%" stop-color="#FFFFFF" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Lightning bolt gradient -->
+    <linearGradient id="boltGrad" x1="10%" y1="0%" x2="90%" y2="100%">
+      <stop offset="0%" stop-color="#FFE566"/>
+      <stop offset="40%" stop-color="#FFD60A"/>
+      <stop offset="100%" stop-color="#FFA500"/>
+    </linearGradient>
+
+    <!-- Lightning inner highlight -->
+    <linearGradient id="boltHighlight" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF5A0" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFB800" stop-opacity="0.0"/>
+    </linearGradient>
+
+    <!-- Bolt glow filter -->
+    <filter id="boltGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="14" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="1 0.8 0 0 0
+                0.9 0.7 0 0 0
+                0   0   0 0 0
+                0   0   0 0.7 0" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Soft drop shadow for building -->
+    <filter id="buildingShadow" x="-10%" y="-5%" width="130%" height="120%">
+      <feDropShadow dx="8" dy="10" stdDeviation="12" flood-color="#000814" flood-opacity="0.55"/>
+    </filter>
+
+    <!-- Rooftop element shadow -->
+    <filter id="softShadow" x="-20%" y="-20%" width="160%" height="160%">
+      <feDropShadow dx="3" dy="3" stdDeviation="5" flood-color="#000814" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- iOS icon clip -->
+    <clipPath id="iconClip">
+      <rect x="0" y="0" width="1024" height="1024" rx="220" ry="220"/>
+    </clipPath>
+
+    <!-- Bolt outer glow (wide) -->
+    <filter id="boltOuterGlow" x="-60%" y="-40%" width="220%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="28" result="bigBlur"/>
+      <feColorMatrix in="bigBlur" type="matrix"
+        values="1 0.7 0 0 0.1
+                0.8 0.6 0 0 0.05
+                0   0   0 0 0
+                0   0   0 0.5 0" result="yellowGlow"/>
+      <feMerge>
+        <feMergeNode in="yellowGlow"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+  </defs>
+
+  <!-- ═══════════════════════════════════════════
+       BACKGROUND
+  ════════════════════════════════════════════ -->
+  <g clip-path="url(#iconClip)">
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#bgGrad)"/>
+
+    <!-- Subtle center glow -->
+    <ellipse cx="490" cy="490" rx="380" ry="360" fill="#112040" opacity="0.45"/>
+
+    <!-- ═══════════════════════════════════════════
+         BOLT OUTER GLOW LAYER (behind building)
+    ════════════════════════════════════════════ -->
+    <!-- Wide diffuse glow painted behind everything -->
+    <g filter="url(#boltOuterGlow)" opacity="0.6">
+      <!--
+        Lightning bolt shape: large, tilted, classic 3-segment
+        Top-right corner around (620, 230), tip at (680, 720)
+        Coordinates designed at 1024x1024 scale
+      -->
+      <polygon
+        points="
+          618,230
+          548,480
+          598,475
+          530,750
+          716,430
+          656,438
+          740,230
+        "
+        fill="#FFD60A"
+      />
+    </g>
+
+    <!-- ═══════════════════════════════════════════
+         BUILDING  (filter for drop shadow)
+    ════════════════════════════════════════════ -->
+    <g filter="url(#buildingShadow)">
+
+      <!-- ── MAIN STRUCTURE ──
+           Building spans x: 285 to 535 (250px wide)
+           Building spans y: 195 to 730 (535px tall)
+           Left teal glass panel: x 285–390 (105px = ~42% of width)
+           Right white wall: x 390–535 (145px)
+      -->
+
+      <!-- Main white wall body -->
+      <rect x="285" y="195" width="250" height="535" fill="url(#wallGrad)" rx="4" ry="4"/>
+
+      <!-- Left glass curtain wall -->
+      <rect x="285" y="195" width="105" height="535" fill="url(#glassGrad)" rx="4" ry="4"/>
+      <!-- Glass sheen overlay -->
+      <rect x="285" y="195" width="105" height="535" fill="url(#glassSheen)" rx="4" ry="4"/>
+
+      <!-- ── FLOOR DIVIDERS ── (5 visible floors, ~535/6 ≈ 89px each) -->
+      <!-- Floor lines on white wall section only -->
+      <line x1="285" y1="284" x2="535" y2="284" stroke="#CBD5E1" stroke-width="2.5"/>
+      <line x1="285" y1="373" x2="535" y2="373" stroke="#CBD5E1" stroke-width="2.5"/>
+      <line x1="285" y1="462" x2="535" y2="462" stroke="#CBD5E1" stroke-width="2.5"/>
+      <line x1="285" y1="551" x2="535" y2="551" stroke="#CBD5E1" stroke-width="2.5"/>
+      <line x1="285" y1="640" x2="535" y2="640" stroke="#CBD5E1" stroke-width="2.5"/>
+
+      <!-- ── GLASS PANEL HORIZONTAL DIVIDERS ── (teal section) -->
+      <line x1="285" y1="284" x2="390" y2="284" stroke="#009E8C" stroke-width="2" opacity="0.6"/>
+      <line x1="285" y1="373" x2="390" y2="373" stroke="#009E8C" stroke-width="2" opacity="0.6"/>
+      <line x1="285" y1="462" x2="390" y2="462" stroke="#009E8C" stroke-width="2" opacity="0.6"/>
+      <line x1="285" y1="551" x2="390" y2="551" stroke="#009E8C" stroke-width="2" opacity="0.6"/>
+      <line x1="285" y1="640" x2="390" y2="640" stroke="#009E8C" stroke-width="2" opacity="0.6"/>
+
+      <!-- ── GLASS PANEL VERTICAL DIVIDER ──
+           Thin vertical mullion in glass section -->
+      <line x1="337" y1="195" x2="337" y2="730" stroke="#009E8C" stroke-width="1.5" opacity="0.5"/>
+
+      <!-- ── WINDOW ACCENTS IN WHITE WALL ──
+           Each floor: 2 small windows in white wall (x 400–530) -->
+      <!-- Floor 1 (top): y 195–284 -->
+      <rect x="402" y="214" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <rect x="466" y="214" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <!-- Floor 2: y 284–373 -->
+      <rect x="402" y="303" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <rect x="466" y="303" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <!-- Floor 3: y 373–462 -->
+      <rect x="402" y="392" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <rect x="466" y="392" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <!-- Floor 4: y 462–551 -->
+      <rect x="402" y="481" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <rect x="466" y="481" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <!-- Floor 5: y 551–640 -->
+      <rect x="402" y="570" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <rect x="466" y="570" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <!-- Floor 6 (bottom, partial): y 640–730 -->
+      <rect x="402" y="659" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+      <rect x="466" y="659" width="52" height="48" fill="#B8E8F0" rx="3" opacity="0.85"/>
+
+      <!-- ── BALCONIES ── on right side of white wall section, each floor -->
+      <!-- Balcony slab: rect protruding to the right -->
+      <!-- Floor 1 balcony -->
+      <rect x="510" y="270" width="52" height="14" fill="#F0F4FF" rx="2"/>
+      <line x1="512" y1="270" x2="560" y2="270" stroke="#94A3B8" stroke-width="2"/>
+      <line x1="514" y1="258" x2="514" y2="270" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="530" y1="258" x2="530" y2="270" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="546" y1="258" x2="546" y2="270" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="558" y1="258" x2="558" y2="270" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="514" y1="258" x2="560" y2="258" stroke="#94A3B8" stroke-width="1.5"/>
+
+      <!-- Floor 2 balcony -->
+      <rect x="510" y="359" width="52" height="14" fill="#F0F4FF" rx="2"/>
+      <line x1="512" y1="359" x2="560" y2="359" stroke="#94A3B8" stroke-width="2"/>
+      <line x1="514" y1="347" x2="514" y2="359" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="530" y1="347" x2="530" y2="359" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="546" y1="347" x2="546" y2="359" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="558" y1="347" x2="558" y2="359" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="514" y1="347" x2="560" y2="347" stroke="#94A3B8" stroke-width="1.5"/>
+
+      <!-- Floor 3 balcony -->
+      <rect x="510" y="448" width="52" height="14" fill="#F0F4FF" rx="2"/>
+      <line x1="512" y1="448" x2="560" y2="448" stroke="#94A3B8" stroke-width="2"/>
+      <line x1="514" y1="436" x2="514" y2="448" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="530" y1="436" x2="530" y2="448" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="546" y1="436" x2="546" y2="448" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="558" y1="436" x2="558" y2="448" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="514" y1="436" x2="560" y2="436" stroke="#94A3B8" stroke-width="1.5"/>
+
+      <!-- Floor 4 balcony -->
+      <rect x="510" y="537" width="52" height="14" fill="#F0F4FF" rx="2"/>
+      <line x1="512" y1="537" x2="560" y2="537" stroke="#94A3B8" stroke-width="2"/>
+      <line x1="514" y1="525" x2="514" y2="537" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="530" y1="525" x2="530" y2="537" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="546" y1="525" x2="546" y2="537" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="558" y1="525" x2="558" y2="537" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="514" y1="525" x2="560" y2="525" stroke="#94A3B8" stroke-width="1.5"/>
+
+      <!-- Floor 5 balcony -->
+      <rect x="510" y="626" width="52" height="14" fill="#F0F4FF" rx="2"/>
+      <line x1="512" y1="626" x2="560" y2="626" stroke="#94A3B8" stroke-width="2"/>
+      <line x1="514" y1="614" x2="514" y2="626" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="530" y1="614" x2="530" y2="626" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="546" y1="614" x2="546" y2="626" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="558" y1="614" x2="558" y2="626" stroke="#94A3B8" stroke-width="1.5"/>
+      <line x1="514" y1="614" x2="560" y2="614" stroke="#94A3B8" stroke-width="1.5"/>
+
+      <!-- ── ROOFTOP MECHANICAL ELEMENT ── -->
+      <!-- Flat roof extension / parapet -->
+      <rect x="280" y="183" width="260" height="16" fill="#E2E8F4" rx="3"/>
+      <!-- Mechanical box -->
+      <rect x="340" y="148" width="90" height="38" fill="#D0D8EC" rx="4"/>
+      <rect x="344" y="152" width="20" height="14" fill="#94A3B8" rx="2" opacity="0.7"/>
+      <rect x="370" y="152" width="20" height="14" fill="#94A3B8" rx="2" opacity="0.7"/>
+      <!-- Antenna / small element -->
+      <rect x="410" y="130" width="5" height="22" fill="#94A3B8" rx="2"/>
+      <circle cx="412" cy="128" r="5" fill="#00C9B1"/>
+
+      <!-- ── BASE / ENTRANCE ── wider podium -->
+      <rect x="258" y="730" width="304" height="58" fill="#E8EEF8" rx="4"/>
+      <!-- Entrance door -->
+      <rect x="374" y="738" width="48" height="50" fill="#00C9B1" rx="3" opacity="0.9"/>
+      <rect x="378" y="742" width="18" height="46" fill="#009E8C" rx="2"/>
+      <!-- Door handle -->
+      <circle cx="391" cy="765" r="4" fill="#FFD60A"/>
+      <!-- Lobby windows -->
+      <rect x="270" y="742" width="38" height="30" fill="#B8E8F0" rx="3" opacity="0.8"/>
+      <rect x="318" y="742" width="38" height="30" fill="#B8E8F0" rx="3" opacity="0.8"/>
+      <rect x="442" y="742" width="38" height="30" fill="#B8E8F0" rx="3" opacity="0.8"/>
+      <rect x="492" y="742" width="38" height="30" fill="#B8E8F0" rx="3" opacity="0.8"/>
+
+      <!-- ── BUILDING OUTER OUTLINE ── -->
+      <!-- Main body outline -->
+      <rect x="285" y="195" width="250" height="535" fill="none" stroke="#1E293B" stroke-width="4" rx="4" ry="4"/>
+      <!-- Glass panel divider vertical outline -->
+      <line x1="390" y1="195" x2="390" y2="730" stroke="#1E293B" stroke-width="3"/>
+      <!-- Parapet outline -->
+      <rect x="280" y="183" width="260" height="16" fill="none" stroke="#1E293B" stroke-width="3.5" rx="3"/>
+      <!-- Mechanical box outline -->
+      <rect x="340" y="148" width="90" height="38" fill="none" stroke="#1E293B" stroke-width="3.5" rx="4"/>
+      <!-- Base outline -->
+      <rect x="258" y="730" width="304" height="58" fill="none" stroke="#1E293B" stroke-width="4" rx="4"/>
+
+    </g>
+    <!-- end building shadow group -->
+
+    <!-- ═══════════════════════════════════════════
+         LIGHTNING BOLT
+         Classic angular 3-segment bolt
+         Center roughly: x=670, y=470
+         Overall: ~210px tall, tilted ~15° clockwise
+    ════════════════════════════════════════════ -->
+
+    <!--
+      Bolt path defined as a proper angular lightning shape.
+      Points (outer silhouette, clockwise from top-left):
+
+      Top-left of upper segment  → (604, 222)
+      Top-right of upper segment → (704, 222)
+      Right side mid-kink        → (648, 458)
+      Right ear (wide point)     → (726, 452)
+      Bottom tip                 → (590, 768)
+      Left side mid-kink         → (628, 510)
+      Left ear (narrow)          → (556, 516)
+      Close back to start
+
+      This gives a classic chunky zigzag bolt.
+    -->
+
+    <!-- Bolt glow (wide, soft, rendered behind bolt shape) -->
+    <polygon
+      points="
+        604,222
+        704,222
+        648,458
+        726,452
+        590,768
+        628,510
+        556,516
+      "
+      fill="#FFD60A"
+      filter="url(#boltOuterGlow)"
+      opacity="0.55"
+    />
+
+    <!-- Bolt main fill -->
+    <polygon
+      points="
+        604,222
+        704,222
+        648,458
+        726,452
+        590,768
+        628,510
+        556,516
+      "
+      fill="url(#boltGrad)"
+      filter="url(#boltGlow)"
+      stroke="#CC8800"
+      stroke-width="4"
+      stroke-linejoin="round"
+    />
+
+    <!-- Bolt inner highlight stripe (center line of bolt, lighter) -->
+    <!-- Upper segment highlight -->
+    <polygon
+      points="
+        628,240
+        672,240
+        636,430
+        668,426
+        645,470
+        618,475
+        660,254
+      "
+      fill="url(#boltHighlight)"
+      opacity="0.55"
+    />
+
+    <!-- ═══════════════════════════════════════════
+         APP NAME TEXT
+    ════════════════════════════════════════════ -->
+    <!-- Text shadow -->
+    <text
+      x="412"
+      y="847"
+      text-anchor="middle"
+      font-family="'Helvetica Neue', Arial, sans-serif"
+      font-weight="900"
+      font-size="56"
+      letter-spacing="4"
+      fill="#000814"
+      opacity="0.4"
+      dx="3"
+      dy="3"
+    >2020EV</text>
+
+    <!-- Text main -->
+    <text
+      x="412"
+      y="847"
+      text-anchor="middle"
+      font-family="'Helvetica Neue', Arial, sans-serif"
+      font-weight="900"
+      font-size="56"
+      letter-spacing="4"
+      fill="#FFFFFF"
+      opacity="0.92"
+    >2020EV</text>
+
+    <!-- ═══════════════════════════════════════════
+         SUBTLE VIGNETTE (darkens edges slightly)
+    ════════════════════════════════════════════ -->
+    <radialGradient id="vignette" cx="50%" cy="50%" r="70%">
+      <stop offset="60%" stop-color="#0A0F1E" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000814" stop-opacity="0.55"/>
+    </radialGradient>
+    <rect x="0" y="0" width="1024" height="1024" fill="url(#vignette)"/>
+
+  </g>
+  <!-- end icon clip -->
+
+</svg>
