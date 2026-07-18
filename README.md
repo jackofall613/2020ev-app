@@ -10,6 +10,29 @@ Private mobile app for condo residents sharing a Level 2 ChargePoint (CPF50) cha
 
 ---
 
+## How Codex and GPT-5.6 were used
+
+**Codex** was the pitch partner that got this project approved in the first place.
+The original condo board had five members with five different vocabularies, and a
+deck that spoke only one of them was going to lose. Codex helped build the board
+pitch deck and do the homework behind it — what each board member did, what they
+cared about — then rebuild one pitch into five dialects (the treasurer got pure
+ledger math; the golf lover was told the queue "gives everyone a tee time" and
+that camping on the plug is slow play). The vote wasn't close.
+
+**GPT-5.6** (`gpt-5.6-terra`) powers the product's AI layer in production:
+
+- **Admin billing summary** — one click in the admin portal writes the building's
+  billing month in plain English (`POST /wallet/statement/summary`).
+- **Resident billing assistant** — `POST /wallet/assistant` answers residents'
+  questions ("how much was my last session?") grounded strictly in their own
+  wallet ledger; the in-app chat UI for it is next on the roadmap.
+- The AI layer ([apps/api/src/services/assistant.ts](apps/api/src/services/assistant.ts))
+  is provider-agnostic and env-switchable via `OPENAI_MODEL` — the whole platform
+  runs fine with it disabled, and no billing math is ever delegated to a model.
+
+---
+
 ## Documentation map — everything, in one place
 
 Engineering / product:
@@ -293,8 +316,8 @@ Admin Portal (Vercel)
 ### 1. Clone & install
 
 ```bash
-git clone https://github.com/jackofall613/2020ev.git
-cd 2020ev
+git clone https://github.com/jackofall613/2020ev-app.git
+cd 2020ev-app
 npm install
 ```
 
